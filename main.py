@@ -45,8 +45,10 @@ def channel_ids_callback(channel_ids):
 
 
 def main():
+    print(f"start: {datetime.datetime.now()}")
     count = loop_channel_ids(channel_ids_callback)
     print(f"{count} channels done")
+    print(f"end: {datetime.datetime.now()}")
 
 
 if __name__ == '__main__':
