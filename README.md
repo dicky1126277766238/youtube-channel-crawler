@@ -25,7 +25,7 @@ Use [Django migration](https://docs.djangoproject.com/en/3.2/topics/migrations/)
 
 #### 3. Set your [YouTube API Key](https://developers.google.com/youtube/registering_an_application)
 
-Set it in [utils/youtube.py](utils/youtube.py). (Maybe use os.environ later)
+Set it as environment variable **YOUTUBE_API_KEY** or through init_youtube_client(key)
 
 ---
 

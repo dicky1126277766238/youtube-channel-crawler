@@ -8,6 +8,8 @@ from db.models import *
 from utils.topic import get_topic_models
 from utils.youtube import loop_channel_ids, fetch_channels
 
+# from utils.youtube import init_youtube_client
+# init_youtube_client("KEY")
 
 def channel_ids_callback(channel_ids):
     items = fetch_channels(channel_ids)

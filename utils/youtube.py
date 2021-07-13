@@ -1,17 +1,26 @@
+import os
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-DEVELOPER_KEY = ''
 YOUTUBE_API_SERVICE_NAME = 'youtube'
 YOUTUBE_API_VERSION = 'v3'
+youtube_client = None
 
-youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
-                developerKey=DEVELOPER_KEY)
+if "YOUTUBE_API_KEY" in os.environ:
+    youtube_client = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=os.environ["YOUTUBE_API_KEY"])
+
+
+def init_youtube_client(key):
+    global youtube_client
+    youtube_client = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=key)
 
 
 def loop_channel_ids(callback):
+    if youtube_client is None:
+        raise Exception("Please init youtube client or set environment variable YOUTUBE_API_KEY")
+
     count = 0
-    search = youtube.search()
+    search = youtube_client.search()
     request = search.list(
         type='channel',
         part='id',
@@ -32,7 +41,10 @@ def loop_channel_ids(callback):
 
 
 def fetch_channels(channel_ids):
-    response = youtube.channels().list(
+    if youtube_client is None:
+        raise Exception("Please init youtube client or set environment variable YOUTUBE_API_KEY")
+
+    response = youtube_client.channels().list(
         part='snippet,statistics,topicDetails',
         id=','.join(channel_ids),
         maxResults=50
@@ -41,6 +53,7 @@ def fetch_channels(channel_ids):
     return response.get("items", [])
 
 
+# test
 if __name__ == '__main__':
     try:
         loop_channel_ids(fetch_channels)
