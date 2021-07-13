@@ -11,6 +11,9 @@ from utils.youtube import loop_channel_ids, fetch_channels
 # from utils.youtube import init_youtube_client
 # init_youtube_client("KEY")
 
+dev = True
+
+
 def channel_ids_callback(channel_ids):
     items = fetch_channels(channel_ids)
     time_now = datetime.datetime.now()
@@ -43,7 +46,8 @@ def channel_ids_callback(channel_ids):
         topics = get_topic_models(topic_details.get("topicIds", []), topic_details.get("topicCategories", []))
         channel.topics.set(topics)
 
-    return True
+    # terminate loop if return True
+    return dev
 
 
 def main():
